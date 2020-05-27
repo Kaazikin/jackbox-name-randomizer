@@ -3,6 +3,7 @@ package com.github.kaazikin.jackbox;
 import com.twilio.Twilio;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -31,6 +32,8 @@ public class Main {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+        frame.setResizable(false);
+        frame.setMinimumSize(new Dimension(500, 200));
     }
 
     private static void readFile(){

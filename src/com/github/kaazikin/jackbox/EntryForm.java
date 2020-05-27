@@ -2,6 +2,7 @@ package com.github.kaazikin.jackbox;
 
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,6 +17,7 @@ public class EntryForm {
     private JButton sendTextButton;
     private JList numberList;
     protected JPanel mainPanel;
+    private JButton deleteNumberButton;
     private Random rand;
     private ArrayList<String> numberContainer;
 
@@ -41,6 +43,17 @@ public class EntryForm {
                     String msg = "Your auto-generated username is " + outputNames.get(i) + ".";
                     sendMessage(numberContainer.get(i), msg);
                 }
+            }
+        });
+        deleteNumberButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try{
+                    String s = numberContainer.remove(numberList.getSelectedIndex());
+                    model.removeElementAt(numberList.getSelectedIndex());
+                } catch (Exception a){
+                    System.out.println(a.toString())
+;                }
             }
         });
     }
