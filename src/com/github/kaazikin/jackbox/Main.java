@@ -1,16 +1,30 @@
 package com.github.kaazikin.jackbox;
 
+import com.twilio.Twilio;
+
 import javax.swing.*;
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Properties;
 import java.util.Scanner;
 
 public class Main {
     public static ArrayList<String> usernames;
+    public static Properties prop;
+    public static String accountSID;
+    public static String authToken;
+    public static String fromNumber;
     public static void main(String[] args){
         usernames = new ArrayList();
+        prop = new Properties();
         readFile();
+
+        accountSID = prop.getProperty("account.sid");
+        authToken = prop.getProperty("account.token");
+        fromNumber = prop.getProperty("account.phonenumber");
+
+        Twilio.init(accountSID, authToken);
 
         JFrame frame = new JFrame("EntryForm");
         frame.setContentPane(new EntryForm().mainPanel);
@@ -28,7 +42,9 @@ public class Main {
                 String data = reader.nextLine();
                 usernames.add(data);
             }
-        } catch (FileNotFoundException e) {
+            FileReader propReader = new FileReader("resources/application.properties");
+            prop.load(propReader);
+        } catch (Exception e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
         }

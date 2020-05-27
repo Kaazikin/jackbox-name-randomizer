@@ -1,10 +1,13 @@
 package com.github.kaazikin.jackbox;
 
+import com.twilio.rest.api.v2010.account.Message;
+import com.twilio.type.PhoneNumber;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Random;
+
 
 
 public class EntryForm {
@@ -14,11 +17,11 @@ public class EntryForm {
     private JList numberList;
     protected JPanel mainPanel;
     private Random rand;
-    private ArrayList numberContainer;
+    private ArrayList<String> numberContainer;
 
     public EntryForm() {
         rand = new Random(System.nanoTime());
-        numberContainer = new ArrayList<String>();
+        numberContainer = new ArrayList();
         DefaultListModel model = new DefaultListModel();
         numberList.setModel(model);
 
@@ -34,7 +37,10 @@ public class EntryForm {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ArrayList<String> outputNames = usernamePicker(numberContainer.size());
-
+                for(int i = 0; i < outputNames.size(); i++){
+                    String msg = "Your auto-generated username is " + outputNames.get(i) + ".";
+                    sendMessage(numberContainer.get(i), msg);
+                }
             }
         });
     }
@@ -46,6 +52,12 @@ public class EntryForm {
         }
         return output;
     };
+
+    private void sendMessage(String phoneNumber, String content){
+        Message message = Message
+                .creator(new PhoneNumber(phoneNumber), new PhoneNumber(Main.fromNumber), content)
+                .create();
+    }
 
 
 }
